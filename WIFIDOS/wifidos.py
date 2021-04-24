@@ -1,15 +1,11 @@
-
 # 使用子进程模块在Kali Linux上运行命令。
 import subprocess
-# 正则表达式。
 import re
-# 我们要打开airmon-ng生成的CSV文件, 并使用内置的csv模块。
-
 import csv
 # 导入os，检查sudo
 import os
 import time
-# 如果找到任何.csv文件，我们希望移动该文件夹中的.csv文件。
+# 如果找到任何.csv文件，移动该文件夹中的.csv文件。
 import shutil
 # 为.csv文件名创建时间戳
 from datetime import datetime
@@ -37,29 +33,29 @@ def check_for_essid(essid, lst):
     return check_status
 
 # Basic user interface header
-print("\n* 欢迎使用WiFiDOS攻击工具                                      *")
+print("\n\033[31m* 欢迎使用WiFiDOS攻击工具                                      *")
 print("\n*************************************************************")
 print("\n* Copyright of Haoran Li, 2021                              *")
-print("\n*************************************************************")
+print("\n*************************************************************\033[0m")
 
 
 # 如果用户没有以超级用户权限运行程序，则退出进程。
 if not 'SUDO_UID' in os.environ.keys():
-    print("请以超级用户身份运行此程序.")
+    print("\033[31m请以超级用户身份运行此程序.\033[0m")
     exit()
 
 #  在运行脚本之前删除.csv文件。
 for file_name in os.listdir():
     # 每次我们运行程序时，应该只有一个csv文件
     if ".csv" in file_name:
-        print("目录中不应该有任何.csv文件。我们在您的目录中找到了.csv文件，并将它们移动到备份目录。")
+        print("\033[33m目录中不应该有任何.csv文件。在目录中找到了.csv文件，并将它们移动到备份目录。")
         # 得到当前的工作目录
         directory = os.getcwd()
         try:
             # 创建了一个名为/backup的新目录
             os.mkdir(directory + "/backup/")
         except:
-            print("备份文件夹存在。")
+            print("备份文件夹存在。\033[0m")
         # 创建时间戳
         timestamp = datetime.now()
         # 将文件夹中的所有.csv文件移到备份文件夹。
@@ -77,11 +73,11 @@ check_wifi_result = wlan_pattern.findall(subprocess.run(["iwconfig"], capture_ou
 
 # 未连接WiFi适配器。
 if len(check_wifi_result) == 0:
-    print("请连接WiFi适配器并重试。")
+    print("\033[31m请连接WiFi适配器并重试。\033[0m")
     exit()
 
 # 选择WiFi接口的菜单
-print("下面列出来的WiFi接口是可用的:")
+print("\033[34m下面列出来的WiFi接口是可用的:")
 for index, item in enumerate(check_wifi_result):
     print(f"{index} - {item}")
 
