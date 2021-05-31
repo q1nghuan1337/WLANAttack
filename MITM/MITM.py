@@ -1,7 +1,14 @@
+# coding:utf-8
 import os
 import time
 import sys
 from scapy.all import *
+
+
+print("\n\033[31m*        欢迎使用无线中间人攻击工具                                      *")
+print("\n*************************************************************")
+print("\n*************************************************************\033[0m")
+
 
 def getInfo():
 	print("请输入需要填写的信息：")
@@ -49,12 +56,12 @@ def manInTheMiddle():
 	info = getInfo()
 	setIPForwarding(True)
 
-	print("~~~Getting MACs...")
+	print("获取mac地址中....")
 	try:
 		victimMAC = get_MAC(info[1], info[0])
 	except Exception, e:
 		setIPForwarding(False)
-		print("~!~Error getting victim MAC...")
+		print("获取受害者mac地址错误")
 		print(e)
 		sys.exit(1)
 
@@ -62,7 +69,7 @@ def manInTheMiddle():
 		routerMAC = get_MAC(info[2], info[0])
 	except Exception, e:
 		setIPForwarding(False)
-		print("~!~Error getting router MAC...")
+		print("获取路由器mac地址错误")
 		print(e)
 		sys.exit(1)
 

@@ -91,6 +91,12 @@ sleep 5
 
 start() {
 
+# echo
+printf "\n\e[1;92m*        欢迎使用伪造AP工具                          *"
+printf "\n*************************************************************"
+printf "\n*************************************************************\e[0m\n"
+
+
 if [[ -e credentials.txt ]]; then
 rm -rf credentials.txt
 fi
